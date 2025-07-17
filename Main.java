@@ -23,6 +23,17 @@ public class Main {
 
         System.out.println("Productos en la categoría " + categoriaDeseada + ":");
         // Aquí debe ir la lógica de filtrado e impresión de resultados.
+
+        for (Producto aux: productos ) {
+        	if(aux.getCategoria() != null && 
+        			categoriaDeseada != null && 
+        			!categoriaDeseada.isEmpty() && 
+        			!aux.getCategoria().isEmpty() &&
+        			aux.getCategoria().equalsIgnoreCase(categoriaDeseada)) {
+        		String precioN = (aux.getPrecio() != null) ? "$ " + aux.getPrecio() : "Precio no disponible";
+        		System.out.println(aux.getNombre() + "-> " + precioN);
+        	}
+        }
     }
 }
 
