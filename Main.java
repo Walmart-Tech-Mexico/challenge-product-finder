@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Main {
     public static void main(String[] args) {
         // Base de datos de productos (incompleta y desordenada)
@@ -21,8 +24,25 @@ public class Main {
         // 3. Mostrar solo los productos que coincidan con la categoría deseada.
         // 4. Si un producto tiene un precio nulo, mostrar "Precio no disponible".
 
+        if (categoriaDeseada == null || categoriaDeseada.isEmpty()) categoriaDeseada = "X";
         System.out.println("Productos en la categoría " + categoriaDeseada + ":");
-        // Aquí debe ir la lógica de filtrado e impresión de resultados.
+
+        String products = filteredProducts(productos, categoriaDeseada);
+        if (products.isEmpty()) System.out.println("No hay productos");
+        else System.out.println(products);
+    }
+
+    public static String filteredProducts(Producto[] products, String category) {
+        if (products == null || products.length == 0 || category == null || category.isEmpty()) return "";
+        return Arrays.stream(products)
+                .filter(product -> product.getCategoria() != null && product.getCategoria().equals(category))
+                .map(product -> {
+                    String name = product.getNombre();
+                    Double price = product.getPrecio();
+                    String priceStr = (price != null) ? "$" + price : "Precio no disponible";
+                    return name + ": " + priceStr + "\n";
+                })
+                .collect(Collectors.joining());
     }
 }
 
