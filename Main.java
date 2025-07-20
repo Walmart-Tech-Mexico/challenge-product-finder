@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         // Base de datos de productos (incompleta y desordenada)
@@ -8,21 +10,33 @@ public class Main {
             new Producto("Pantalones", "Ropa", 50.0),
             new Producto("Libro", "Libros", 20.0),
             new Producto("Mouse", "Electrónicos", null), // Precio faltante
-            new Producto("Calcetines", null, 15.0)       // Categoría faltante
+            new Producto("Calcetines", null, 15.0),       // Categoría faltante
+            new Producto("Test empty string", "", 15.0)
         };
 
         // Categoría a filtrar (puede ser nula o vacía)
         String categoriaDeseada = "Electrónicos";
 
-        // TODO: Implementar la lógica para filtrar productos por categoría.
-        // Consideraciones:
-        // 1. Manejar casos donde la categoría del producto o la categoría deseada sean nulas o vacías.
-        // 2. Asegurarse de que el código sea robusto y no lance excepciones inesperadas.
-        // 3. Mostrar solo los productos que coincidan con la categoría deseada.
-        // 4. Si un producto tiene un precio nulo, mostrar "Precio no disponible".
-
         System.out.println("Productos en la categoría " + categoriaDeseada + ":");
         // Aquí debe ir la lógica de filtrado e impresión de resultados.
+
+        Arrays.stream(productos).filter(producto -> {
+            String categoriaProducto = producto.getCategoria();
+            
+            if (categoriaProducto == null && categoriaDeseada == null)
+                return true;
+
+            if (categoriaProducto != null && categoriaProducto.isEmpty() && categoriaDeseada != null && categoriaDeseada.isEmpty())
+                return true;
+        
+            if (
+                categoriaProducto == null || categoriaProducto.isEmpty()
+                || categoriaDeseada == null || categoriaDeseada.isEmpty()
+            )
+                return false;
+
+            return categoriaDeseada.equals(categoriaProducto);
+        }).forEach(System.out::println);
     }
 }
 
@@ -51,10 +65,12 @@ class Producto {
 
     @Override
     public String toString() {
+        String precioAMostrar = precio == null ? "Precio no disponible" : precio.toString();
+
         return "Producto{" +
                 "nombre='" + nombre + '\'' +
                 ", categoria='" + categoria + '\'' +
-                ", precio=" + precio +
+                ", precio=" + precioAMostrar +
                 '}';
     }
 }
