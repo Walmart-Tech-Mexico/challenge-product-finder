@@ -1,3 +1,5 @@
+import javax.management.RuntimeErrorException;
+
 public class Main {
     public static void main(String[] args) {
         // Base de datos de productos (incompleta y desordenada)
@@ -14,6 +16,7 @@ public class Main {
         // Categoría a filtrar (puede ser nula o vacía)
         String categoriaDeseada = "Electrónicos";
 
+
         // TODO: Implementar la lógica para filtrar productos por categoría.
         // Consideraciones:
         // 1. Manejar casos donde la categoría del producto o la categoría deseada sean nulas o vacías.
@@ -23,7 +26,29 @@ public class Main {
 
         System.out.println("Productos en la categoría " + categoriaDeseada + ":");
         // Aquí debe ir la lógica de filtrado e impresión de resultados.
+        //Searching each product by category
+        for(Producto p: productos){
+            //I used try/catch for managed any nullPointerException
+            try {
+                //if the category exist ok continue
+                if(p.getCategoria().equalsIgnoreCase(categoriaDeseada)){
+                    //here I checked if the price is differente of null
+                   if(p.getPrecio() != null){
+                       //I printed here the name of the product and price
+                       System.out.println(p.getNombre() + " precio: " + p.getPrecio());
+                   }else{
+                       //Here I printed only the name and price no able
+                       System.out.println(p.getNombre() + " precio no disponible");
+                   }
+                }
+                //Managed for null pointer exceptions
+            }catch (RuntimeException e){
+                System.out.println("Categoria no existente el producto");
+            }
+        }
     }
+
+
 }
 
 class Producto {
